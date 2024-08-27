@@ -40,4 +40,8 @@ public class Deck {
         return cards.isEmpty();
     }
 
+    public List<Card> getCards() {
+        return cards;
+    }
+
 }
