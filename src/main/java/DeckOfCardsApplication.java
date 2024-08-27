@@ -25,10 +25,9 @@ public class DeckOfCardsApplication {
                 System.out.println("Request: "+(i+1)+" Dealt: " + card);
             }
         } catch (EmptyDeckException e) {
+            System.out.println("Remaining Cards: "+ deck.size());
             System.err.println("Error: " + e.getMessage());
         }
 
-
-        System.out.println("Remaining Cards: "+ deck.size());
     }
 }
