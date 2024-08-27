@@ -22,7 +22,7 @@ public class DeckOfCardsApplication {
         try {
             for (int i = 0; i < 53; i++) {
                 Card card = deck.dealCard();
-                System.out.println("Dealt: " + card+" Dealted Cards: "+i);
+                System.out.println("Request: "+(i+1)+" Dealt: " + card);
             }
         } catch (EmptyDeckException e) {
             System.err.println("Error: " + e.getMessage());
