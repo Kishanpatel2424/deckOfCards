@@ -6,28 +6,61 @@ import main.java.interfaces.ShuffleStrategy;
 import main.java.interfaces.impl.RandomShuffleStrategy;
 import main.java.Exception.EmptyDeckException;
 
+import java.util.Scanner;
 
 public class DeckOfCardsApplication {
     public static void main(String[] args) {
-
+        Scanner scanner = new Scanner(System.in);
         ShuffleStrategy shuffleStrategy = new RandomShuffleStrategy();
+        Deck deck = null;
+        boolean running = true;
 
+        while (running) {
+            System.out.println("Enter a command (start, deal, restart, quit):");
+            String command = scanner.nextLine().trim().toLowerCase();
 
-        Deck deck = new Deck(shuffleStrategy);
-        System.out.println("New Deck: "+ deck);
+            switch (command) {
+                case "start":
+                    if (deck == null) {
+                        deck = new Deck(shuffleStrategy);
+                        deck.shuffle();
+                        System.out.println("New game started! Deck initialized.");
+                    } else {
+                        System.out.println("Game already started. Use 'deal' to deal cards or 'restart' to start a new game.");
+                    }
+                    break;
 
-        deck.shuffle();
-        System.out.println("Shuffle Deck: "+ deck);
+                case "deal":
+                    if (deck == null) {
+                        System.out.println("Please start a game first with the 'start' command.");
+                    } else {
+                        try {
+                            Card card = deck.dealCard();
+                            System.out.println("Dealt: " + card);
+                        } catch (EmptyDeckException e) {
+                            System.out.println("No more cards to deal. The deck is empty.");
+                            System.err.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
 
-        try {
-            for (int i = 0; i < 53; i++) {
-                Card card = deck.dealCard();
-                System.out.println("Request: "+(i+1)+" Dealt: " + card);
+                case "restart":
+                    deck = new Deck(shuffleStrategy);
+                    deck.shuffle();
+                    System.out.println("Game restarted! Deck reshuffled.");
+                    break;
+
+                case "quit":
+                    running = false;
+                    System.out.println("Exiting game. Goodbye!");
+                    break;
+
+                default:
+                    System.out.println("Invalid command. Please use 'start', 'deal', 'restart', or 'quit'.");
+                    break;
             }
-        } catch (EmptyDeckException e) {
-            System.out.println("Remaining Cards: "+ deck.size());
-            System.err.println("Error: " + e.getMessage());
         }
 
+        scanner.close();
     }
 }
